@@ -18,7 +18,7 @@
     "docker:build": "docker-compose build --no-cache",
     "docker:start": "docker-compose up",
     "docker:stop": "docker-compose down",
-    "migrate": "tsx src/config/migrations.ts",
+    "migrate": "tsx src/database/migrations.ts",
     "introspect": "drizzle-kit introspect:pg",
     "generate": "drizzle-kit generate:pg"
   },

@@ -7,13 +7,13 @@ export const UserTable = pgTable(
     id: serial('id').primaryKey(),
     username: text('username'),
     email: varchar('email'),
-    created_at: timestamp('created_at').defaultNow(),
+    createdAt: timestamp('createdAt').defaultNow(),
   },
   (table) => ({
-    unique_username: unique('unique_username').on(table.id, table.username),
-    unique_email: unique('unique_email').on(table.id, table.email),
+    uniqueUsername: unique('uniqueUsername').on(table.id, table.username),
+    uniqueEmail: unique('uniqueEmail').on(table.id, table.email),
   })
 );
 
 export type User = InferSelectModel<typeof UserTable>;
-export type newUser = InferInsertModel<typeof UserTable>;
+export type NewUser = InferInsertModel<typeof UserTable>;

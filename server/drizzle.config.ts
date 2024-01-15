@@ -6,7 +6,7 @@ import { getDatabaseUrl } from './src/common/utils/envConfig';
 const databaseUrl = getDatabaseUrl();
 
 export default {
-  schema: './src/config/schema.ts',
+  schema: './src/database/schema.ts',
   driver: 'pg',
   out: './drizzle',
   dbCredentials: {
