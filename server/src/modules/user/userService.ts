@@ -1,4 +1,5 @@
 import { ServiceResponse } from '@common/models/serviceResponse';
+import { isEmpty } from '@common/utils/arrayUtils';
 import { User } from '@modules/user/userModel';
 import { IUserRepository } from '@modules/user/userRepository';
 import { logger } from '@src/server';
@@ -27,9 +28,11 @@ export class UserService implements IUserService {
 
   public async findById(id: number) {
     try {
-      const user = await this._repository.findByIdAsync(id);
-      if (!user) return new ServiceResponse<User>(false, 'User not found.', null);
-      return new ServiceResponse<User>(true, 'User found.', user);
+      const user: User[] = await this._repository.findByIdAsync(id);
+      if (isEmpty(user)) {
+        return new ServiceResponse<User>(false, 'User not found.', null);
+      }
+      return new ServiceResponse<User>(true, 'User found.', user[0] as User);
     } catch (ex) {
       logger.error(ex);
       return new ServiceResponse<User>(false, 'Error finding user.', null, ex);

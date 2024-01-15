@@ -1,21 +1,19 @@
-import { User } from '@modules/user/userModel';
+import { eq } from 'drizzle-orm';
+
+import { db } from '@database/drizzleConnection';
+import { User, UserTable } from '@modules/user/userModel';
 
 export interface IUserRepository {
   findAllAsync(): Promise<User[]>;
-  findByIdAsync(id: number): Promise<User | null>;
+  findByIdAsync(id: number): Promise<User[]>;
 }
 
-const users: User[] = [
-  { id: 1, name: 'Alice', email: 'alice@example.com', age: 42, createdAt: new Date(), updatedAt: new Date() },
-  { id: 2, name: 'Bob', email: 'bob@example.com', age: 21, createdAt: new Date(), updatedAt: new Date() },
-];
-
 export class UserRepository implements IUserRepository {
-  public async findByIdAsync(id: number) {
-    return users.find((user) => user.id === id) || null;
+  public async findAllAsync() {
+    return await db.select().from(UserTable);
   }
 
-  public async findAllAsync() {
-    return users || [];
+  public async findByIdAsync(id: number) {
+    return await db.select().from(UserTable).where(eq(UserTable.id, id));
   }
 }

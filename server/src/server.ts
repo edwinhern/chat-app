@@ -1,9 +1,9 @@
+import 'dotenv/config';
+
 import compression from 'compression';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express, { Express } from 'express';
 import helmet from 'helmet';
-import path from 'path';
 import { pino } from 'pino';
 
 import compressFilter from '@common/middleware/compressFilter';
@@ -13,10 +13,6 @@ import requestLogger from '@common/middleware/requestLogger';
 import { getCorsOrigin } from '@common/utils/envConfig';
 import { healthCheckRouter } from '@modules/healthCheck/healthCheckRoutes';
 import { usersRouter } from '@modules/user/userRoutes';
-
-dotenv.config({
-  path: path.resolve(__dirname, '../.env'),
-});
 
 const logger = pino({ name: 'server start' });
 const app: Express = express();

@@ -15,7 +15,7 @@ describe('User API endpoints', () => {
 
     if (result.responseObject && result.responseObject.length > 0) {
       expect(result.responseObject[0]).toHaveProperty('id');
-      expect(result.responseObject[0]).toHaveProperty('name');
+      expect(result.responseObject[0]).toHaveProperty('username');
     }
   });
 

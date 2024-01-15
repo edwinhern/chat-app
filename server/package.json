@@ -17,7 +17,10 @@
     "prepare": "husky install",
     "docker:build": "docker-compose build --no-cache",
     "docker:start": "docker-compose up",
-    "docker:stop": "docker-compose down"
+    "docker:stop": "docker-compose down",
+    "migrate": "tsx src/config/migrations.ts",
+    "introspect": "drizzle-kit introspect:pg",
+    "generate": "drizzle-kit generate:pg"
   },
   "dependencies": {
     "compression": "^1.7.4",
