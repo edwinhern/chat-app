@@ -1,24 +1,16 @@
+import { eq } from 'drizzle-orm';
+
 import { ServiceResponse } from '@common/models/serviceResponse';
 import { isEmpty } from '@common/utils/arrayUtils';
-import { User } from '@modules/user/userModel';
-import { IUserRepository } from '@modules/user/userRepository';
+import { db } from '@database/drizzleConnection';
+import { User, UserTable } from '@modules/user/userModel';
 import { logger } from '@src/server';
 
-export interface IUserService {
-  findAll(): Promise<ServiceResponse<User[] | null>>;
-  findById(id: number): Promise<ServiceResponse<User | null>>;
-}
-
-export class UserService implements IUserService {
-  private readonly _repository: IUserRepository;
-
-  constructor(repository: IUserRepository) {
-    this._repository = repository;
-  }
-
-  public async findAll() {
+export class UserService {
+  // Retrieves all users from the database
+  public async findAll(): Promise<ServiceResponse<User[] | null>> {
     try {
-      const users = await this._repository.findAllAsync();
+      const users = await db.select().from(UserTable);
       return new ServiceResponse<User[]>(true, 'Users found.', users);
     } catch (ex) {
       logger.error(ex);
@@ -26,15 +18,16 @@ export class UserService implements IUserService {
     }
   }
 
-  public async findById(id: number) {
+  // Retrieves a single user by their ID
+  public async findById(id: number): Promise<ServiceResponse<User | null>> {
     try {
-      const user: User[] = await this._repository.findByIdAsync(id);
+      const user: User[] = await db.select().from(UserTable).where(eq(UserTable.id, id));
       if (isEmpty(user)) {
         return new ServiceResponse<User>(false, 'User not found.', null);
       }
       return new ServiceResponse<User>(true, 'User found.', user[0] as User);
     } catch (ex) {
-      logger.error(ex);
+      logger.error(`Error finding user with id ${id}:`, ex);
       return new ServiceResponse<User>(false, 'Error finding user.', null, ex);
     }
   }
