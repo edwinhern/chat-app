@@ -10,10 +10,8 @@ module.exports = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>/',
   }),
-
-  transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-  },
+  setupFilesAfterEnv: ['./src/database/drizzle.mock.ts'],
+  transform: { '^.+\\.(ts|tsx)$': 'ts-jest' },
   clearMocks: true,
   collectCoverage: true,
   coverageDirectory: 'coverage',
