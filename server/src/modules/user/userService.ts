@@ -6,9 +6,9 @@ import { db } from '@database/drizzleConnection';
 import { User, UserTable } from '@modules/user/userModel';
 import { logger } from '@src/server';
 
-export class UserService {
+export const userService = {
   // Retrieves all users from the database
-  public async findAll(): Promise<ServiceResponse<User[] | null>> {
+  findAll: async (): Promise<ServiceResponse<User[] | null>> => {
     try {
       const users = await db.select().from(UserTable);
       return new ServiceResponse<User[]>(true, 'Users found.', users);
@@ -16,10 +16,10 @@ export class UserService {
       logger.error(ex);
       return new ServiceResponse<User[]>(false, 'Error finding all users.', [], ex);
     }
-  }
+  },
 
   // Retrieves a single user by their ID
-  public async findById(id: number): Promise<ServiceResponse<User | null>> {
+  findById: async (id: number): Promise<ServiceResponse<User | null>> => {
     try {
       const user: User[] = await db.select().from(UserTable).where(eq(UserTable.id, id));
       if (isEmpty(user)) {
@@ -30,5 +30,5 @@ export class UserService {
       logger.error(`Error finding user with id ${id}:`, ex);
       return new ServiceResponse<User>(false, 'Error finding user.', null, ex);
     }
-  }
-}
+  },
+};

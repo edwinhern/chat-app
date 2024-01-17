@@ -1,11 +1,10 @@
 import express, { Request, Response, Router } from 'express';
 
 import { handleServiceResponse } from '@common/utils/responseHandler';
-import { UserService } from '@modules/user/userService';
+import { userService } from '@modules/user/userService';
 
 export const userRouter: Router = (() => {
   const router = express.Router();
-  const userService = new UserService();
 
   router.get('/', async (_req: Request, res: Response) => {
     const serviceResponse = await userService.findAll();
